@@ -6,36 +6,77 @@ package Ventana;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import parcial.Conexion;
+
+
 
 public class Lista extends javax.swing.JFrame {
+
+private JTextArea textArea;
+private JComboBox<String> comboBox;
+private JTextField nameField;
 
     public Lista() {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        JLabel titleLabel = new JLabel("Selección de Frutas");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+
+        // Opciones de la lista
         String[] options = {
             "Moras", "Manzanas", "Uvas", "Sandias", "Melones",
             "Frambuesas", "Mandarinas", "Cocos", "Naranjas", "Mangos", 
             "Tamarindo","Cerezas", "Pepino", "Lechuga", "Tomate",
             "Apio", "Acelga", "Pimentón", "Cebolla", "Espinaca"
         };
-        JComboBox<String> comboBox = new JComboBox<>(options);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(200, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(220, Short.MAX_VALUE))
-        );
+        // Lista desplegable
+        comboBox = new JComboBox<>(options);
+
+        // Campo de texto para ingresar el nombre
+        nameField = new JTextField(20);
+
+        //Botón para guardar la selección
+        JButton saveButton = new JButton("Guardar Selección");
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String Nombre = nameField.getText();
+                String Frutas = (String) comboBox.getSelectedItem();
+
+                Conexion co1 = new Conexion();
+                int rta = co1.Regfrutas(Nombre, Frutas);
+
+                if (rta == 1) {
+                    JOptionPane.showMessageDialog(null, "Selección guardada correctamente");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al guardar la selección");
+                }
+            }
+        });
+
+        // Área de texto para mostrar las selecciones guardadas
+        textArea = new JTextArea(10, 20);
+        textArea.setEditable(false);
+
+        // Panel para agregar los componentes
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(titleLabel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.add(new JLabel("Nombre:"));
+        centerPanel.add(nameField);
+        centerPanel.add(comboBox);
+        panel.add(centerPanel, BorderLayout.CENTER);
+
+        panel.add(saveButton, BorderLayout.EAST);
+        panel.add(new JScrollPane(textArea), BorderLayout.SOUTH);
+
+        // Agregar el panel a la ventana
+        add(panel);
 
         pack();
     }
@@ -49,17 +90,30 @@ public class Lista extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("SELECCION DE FRUTAS O VERDURAS");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(65, 65, 65)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(105, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(231, Short.MAX_VALUE))
         );
 
         pack();
@@ -68,6 +122,7 @@ public class Lista extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -111,7 +166,7 @@ public class Lista extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
+           
             public void run() {
                 new Lista().setVisible(true);
             }
@@ -119,7 +174,8 @@ public class Lista extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
-
 

@@ -43,4 +43,23 @@ public class Conexion {
         }
     }
 
+       public int Regfrutas(String Nombre, String Frutas) {
+            int resp = 0;
+            try {
+                Connection conn = getConexion();
+                PreparedStatement ps = conn.prepareStatement("insert into usuario (Nombre, Frutas) values (?, ?)");
+                ps.setString(1, Nombre);
+                ps.setString(2, Frutas);
+
+                resp = ps.executeUpdate(); // 1 correcto / 0 error
+                System.out.println("Usuario registrado correctamente");
+            } catch (SQLException e) {
+                System.out.println("Error al registrar: " + e.getMessage());
+            } finally {
+                cerrarConexion();
+            }
+            return resp;
+        }
+    
+    
 }
