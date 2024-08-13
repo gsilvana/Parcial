@@ -47,7 +47,7 @@ public class Conexion {
             int resp = 0;
             try {
                 Connection conn = getConexion();
-                PreparedStatement ps = conn.prepareStatement("insert into usuario (Nombre, Frutas) values (?, ?)");
+                PreparedStatement ps = conn.prepareStatement("INSERT INTO seleccion.parcial(Nombre, Frutas) VALUES (?, ?)");
                 ps.setString(1, Nombre);
                 ps.setString(2, Frutas);
 
