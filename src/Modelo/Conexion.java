@@ -1,9 +1,12 @@
-package parcial;
+package Modelo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Conexion {
     private static final String URL = "jdbc:mysql://localhost:3306/seleccion";
@@ -43,23 +46,39 @@ public class Conexion {
         }
     }
 
-       public int Regfrutas(String Nombre, String Frutas) {
-            int resp = 0;
-            try {
-                Connection conn = getConexion();
-                PreparedStatement ps = conn.prepareStatement("INSERT INTO seleccion.parcial(Nombre, Frutas) VALUES (?, ?)");
-                ps.setString(1, Nombre);
-                ps.setString(2, Frutas);
+    public int registrarFruta(String nombre, String fruta) {
+        int resp = 0;
+        try {
+            Connection conn = getConexion();
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO seleccion.parcial(Nombre, Frutas) VALUES (?, ?)");
+            ps.setString(1, nombre);
+            ps.setString(2, fruta);
 
-                resp = ps.executeUpdate(); // 1 correcto / 0 error
-                System.out.println("Usuario registrado correctamente");
-            } catch (SQLException e) {
-                System.out.println("Error al registrar: " + e.getMessage());
-            } finally {
-                cerrarConexion();
-            }
-            return resp;
+            resp = ps.executeUpdate(); // 1 correcto / 0 error
+            System.out.println("Usuario registrado correctamente");
+        } catch (SQLException e) {
+            System.out.println("Error al registrar: " + e.getMessage());
+        } finally {
+            cerrarConexion();
         }
-    
-    
+        return resp;
+    }
+
+    public List<String> obtenerFrutas() {
+        List<String> frutas = new ArrayList<>();
+        try {
+            Connection conn = getConexion();
+            PreparedStatement ps = conn.prepareStatement("SELECT Frutas FROM seleccion.parcial");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                frutas.add(rs.getString("Frutas"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener frutas: " + e.getMessage());
+        } finally {
+            cerrarConexion();
+        }
+        return frutas;
+    }
 }
